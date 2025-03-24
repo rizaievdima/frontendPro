@@ -5,15 +5,18 @@ const goLink = document.querySelector("#go-link");
 let url = "";
 
 linksContainer.addEventListener("click", (event) => {
-    if (event.target.classList.contains("write-link")) {
-        url = prompt("Enter the URL").trim();
+    if (event.target.id === "write-link") {
+        const newUrl = prompt("Enter URL");
+        if (newUrl) {
+            url = newUrl.trim();
+        }
     }
 
-    if (event.target.classList.contains("go-link")) {
+    if (event.target.id === "go-link") {
         if (url) {
             window.location.assign(url);
         } else {
-            console.log("Write correct URL");
+            console.log("First write a URL");
         }
     }
 });
