@@ -1,6 +1,4 @@
 const linksContainer = document.querySelector(".links");
-const writeLink = document.querySelector("#write-link");
-const goLink = document.querySelector("#go-link");
 
 let url = "";
 
