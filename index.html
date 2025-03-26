@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
-    <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-<div class="container">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <form class="form" id="form">
+                <h1>We would like to help you</h1>
+                <div class="form-field">
+                    <input type="text" id="name" name="name" placeholder="Name" />
+                    <span id="error-name" class="error"></span>
+                </div>
+                <div class="form-field">
+                    <textarea id="message" name="message" placeholder="Message"></textarea>
+                    <span id="error-message" class="error"></span>
+                </div>
+                <p class="form-subtitle-text">HOW TO ANSWER YOU?</p>
+                <div class="form-field">
+                    <input type="text" id="phone" name="phone" placeholder="Phone number" />
+                    <span id="error-phone" class="error"></span>
+                </div>
+                <div class="form-field">
+                    <input type="text" id="email" name="email" placeholder="Email" />
+                    <span id="error-email" class="error"></span>
+                </div>
+                <button type="submit" id="submit" class="form-button">
+                    Send message
+                </button>
+            </form>
+        </div>
 
-</div>
-
-
-<script src="main.js"></script>
-</body>
+        <script src="main.js"></script>
+    </body>
 </html>
