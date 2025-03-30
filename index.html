@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
-    <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-<div class="container">
-    <img id="random-image" src="/images/placeholder.jpg" alt=""/>
-</div>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <div id="slider">
+                <div class="slider-area">
+                    <div class="nav-buttons nav-prev disabled">
+                        <span><i class="fa-solid fa-chevron-left"></i> prev</span>
+                    </div>
+                    <div class="slider-content"></div>
+                    <div class="nav-buttons nav-next">
+                        <span>next <i class="fa-solid fa-chevron-right"></i></span>
+                    </div>
+                </div>
+                <div class="slider-dots">
+                    <span>dots</span>
+                </div>
+            </div>
+        </div>
 
-<button id="change-image">Change Image</button>
-
-<script src="main.js"></script>
-</body>
+        <script src="main.js"></script>
+    </body>
 </html>
