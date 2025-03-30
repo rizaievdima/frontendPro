@@ -43,7 +43,8 @@
     text-align: center;
 }
 .slider-item {
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     height: 300px;
     object-fit: cover;
     display: none;
