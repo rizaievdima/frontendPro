@@ -1,4 +1,5 @@
 const todoList = document.querySelector("#todo-list");
+const todoForm = document.querySelector("#todo-form");
 const taskInput = document.querySelector("#task-input");
 const addTaskBtn = document.querySelector("#add-task-btn");
 
@@ -21,10 +22,14 @@ todoList.addEventListener("click", (e) => {
     }
 });
 
-addTaskBtn.addEventListener("click", () => {
-    const newTask = taskInput.value.trim();
-    if (newTask) {
-        createTask(newTask);
+todoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const todoData = new FormData(e.target);
+    const todoName = todoData.get("todo").trim();
+
+    if (todoName) {
+        createTask(todoName);
     }
     taskInput.value = "";
 });
