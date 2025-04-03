@@ -1,24 +1,48 @@
+"use strict";
+
 const todoList = document.querySelector("#todo-list");
 const todoForm = document.querySelector("#todo-form");
 const taskInput = document.querySelector("#task-input");
-const addTaskBtn = document.querySelector("#add-task-btn");
 
-const tasks = ["task 1", "task 2", "task 3"];
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-function createTask(task) {
-    const li = document.createElement("li");
-    li.classList.add("task");
-    li.innerHTML = `<span class="task-text">${task}</span> <button class="delete-btn">Delete</button>`;
-    todoList.appendChild(li);
+function renderTodos() {
+    todoList.innerHTML = "";
+
+    todos.forEach((todo) => {
+        const li = document.createElement("li");
+        li.classList.add("task");
+        if (todo.completed) {
+            li.classList.add("completed");
+        }
+
+        li.innerHTML = `<span data-id="${todo.id}" class="task-text">${todo.name}</span><button data-id="${todo.id}" class="delete-btn">Delete</button>`;
+        todoList.appendChild(li);
+    });
 }
-
-tasks.forEach((task) => createTask(task));
 
 todoList.addEventListener("click", (e) => {
     if (e.target.classList.contains("delete-btn")) {
-        e.target.closest(".task").remove();
+        const id = e.target.dataset.id;
+
+        todos = todos.filter((todo) => todo.id !== id);
+        localStorage.setItem("todos", JSON.stringify(todos));
+
+        renderTodos();
     } else if (e.target.classList.contains("task-text")) {
-        e.target.closest(".task").classList.toggle("completed");
+        const id = e.target.dataset.id;
+
+        todos = todos.map((todo) => {
+            if (todo.id === id) {
+                return {
+                    ...todo,
+                    completed: !todo.completed,
+                };
+            }
+            return todo;
+        });
+        localStorage.setItem("todos", JSON.stringify(todos));
+        renderTodos();
     }
 });
 
@@ -27,9 +51,18 @@ todoForm.addEventListener("submit", (e) => {
 
     const todoData = new FormData(e.target);
     const todoName = todoData.get("todo").trim();
-
     if (todoName) {
-        createTask(todoName);
+        todos.push({
+            id: `${Math.random()}--${todoName}`,
+            name: todoData.get("todo").trim(),
+            completed: false,
+        });
+        localStorage.setItem("todos", JSON.stringify(todos));
+        renderTodos();
+    } else {
+        console.log("Enter todo name!");
     }
     taskInput.value = "";
 });
+
+renderTodos();
