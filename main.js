@@ -54,7 +54,7 @@ todoForm.addEventListener("submit", (e) => {
     if (todoName) {
         todos.push({
             id: `${Math.random()}--${todoName}`,
-            name: todoData.get("todo").trim(),
+            name: todoName,
             completed: false,
         });
         localStorage.setItem("todos", JSON.stringify(todos));
