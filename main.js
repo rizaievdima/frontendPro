@@ -1,65 +1,134 @@
-const weatherInfoBlock = document.querySelector(".weather-widget__info");
-const refreshBtn = document.querySelector(".refresh-btn");
+const postsSection = document.querySelector(".posts-section");
+const newPostsForm = document.querySelector("#add-post-form");
+const newPostTitleInput = document.getElementById("post-title");
+const newPostContentInput = document.getElementById("post-content");
 
-async function getWeatherData() {
-    const response = await fetch(
-        "https://api.openweathermap.org/data/2.5/weather?q=Kyiv&appid=2c5204fdfb43e0e0d1cb286ba18182d2&units=metric"
-    );
+async function getPosts() {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=10");
+
+    if (response.status !== 200) {
+        throw new Error("something wrong");
+    }
+
     const data = await response.json();
     return data;
 }
-function formatDate(date) {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    const day = days[date.getDay()];
-    const month = months[date.getMonth()];
-    const dayOfMonth = date.getDate();
-    const year = date.getFullYear();
-
-    return `${month} ${dayOfMonth}, ${year} - ${day}`;
-}
-
-function formatTime(date) {
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
-}
-
-async function renderWeather() {
-    try {
-        const weatherData = await getWeatherData();
-
-        if (weatherData.cod !== 200) {
-            throw new Error(weatherData.message);
+function getPostComments(postId) {
+    return fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments?_limit=2`).then((response) => {
+        if (response.status !== 200) {
+            throw new Error("something wrong");
         }
+        return response.json();
+    });
+}
 
-        const dateNow = new Date();
-        const formattedDate = formatDate(dateNow);
-        const formattedTime = formatTime(dateNow);
+function addPost(title, content) {
+    return fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            title,
+            body: content,
+            userId: 1,
+        }),
+    }).then((response) => {
+        if (response.status !== 201) {
+            throw new Error("something wrong");
+        }
+        return response.json();
+    });
+}
 
-        weatherInfoBlock.innerHTML = `
-        <div class="weather-widget__main-info">
-            <p class="weather-widget__city">${weatherData.name}</p>
-            <p class="weather-widget__date">${formattedDate}</p>
-            <p class="weather-widget__time">${formattedTime}</p>
-            <p class="">Humidity: ${weatherData.main.humidity}%</p>
-            <p class="">Pressure: ${weatherData.main.pressure} hPa</p>
-        </div>
-        <div class="weather-widget__details">
-            <img src="https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png" alt="Weather Icon">
-            <p class="weather-widget__temperature">${Math.round(weatherData.main.temp)}°C</p>
-            <p class="weather-widget__feels-like">Feels like: ${Math.round(weatherData.main.feels_like)}°C</p>
-            <p class="weather-widget__description">${weatherData.weather[0].description}</p>
+async function renderPosts() {
+    try {
+        postsSection.innerHTML = "Loading...";
+        const postsData = await getPosts();
+        postsSection.innerHTML = "";
 
-        </div>
-    `;
+        postsData.forEach((post) => {
+            postsSection.appendChild(createPostElement(post));
+        });
     } catch (error) {
-        weatherInfoBlock.innerHTML = `<p class="weather-widget__error">${error.message}</p>`;
-        console.error("Error fetching weather data:", error);
+        postsSection.innerHTML = `<p class="weather-widget__error">${error.message}</p>`;
+        console.log("getPosts error:", error);
     }
 }
+function createPostElement(post) {
+    const postElement = document.createElement("div");
+    postElement.classList.add("post");
+    postElement.dataset.id = post.id;
+    postElement.innerHTML = `
+        <p class="post__title">${post.title}</p>
+        <p class="post__excerpt">${post.body}</p>   
+        <div class="comments-block">
+            <button class="show-comment-btn">Show Comments</button>
+            <div class="comments"></div>
+        </div>
+    `;
+    return postElement;
+}
+function createCommentElement(comment) {
+    const commentElement = document.createElement("div");
+    commentElement.classList.add("comment");
+    commentElement.innerHTML = `
+        <p class="comment__author">${comment.name}</p>
+        <p class="comment__email">${comment.email}</p>
+        <p class="comment__body">${comment.body}</p>
+    `;
+    return commentElement;
+}
 
-refreshBtn.addEventListener("click", renderWeather);
+newPostsForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-renderWeather();
+    const title = newPostTitleInput.value.trim();
+    const content = newPostContentInput.value.trim();
+    if (title && content) {
+        document.querySelector(".add-post-btn").disabled = true;
+        addPost(title, content)
+            .then((newPost) => {
+                postsSection.appendChild(createPostElement(newPost));
+                newPostTitleInput.value = "";
+                newPostContentInput.value = "";
+            })
+            .catch((error) => {
+                console.log("addPost error:", error);
+            })
+            .finally(() => {
+                document.querySelector(".add-post-btn").disabled = false;
+            });
+    }
+});
+
+postsSection.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("show-comment-btn")) {
+        const postId = e.target.closest(".post").dataset.id;
+        e.target.disabled = true;
+        e.target.textContent = "Loading...";
+        getPostComments(postId)
+            .then((comments) => {
+                console.log(comments);
+                const commentsBlock = e.target.closest(".post").querySelector(".comments");
+                commentsBlock.innerHTML = "";
+                if (comments.length > 0) {
+                    comments.forEach((comment) => {
+                        commentsBlock.appendChild(createCommentElement(comment));
+                    });
+                } else {
+                    commentsBlock.innerHTML = `<p>No comments</p>`;
+                }
+            })
+            .catch((error) => {
+                console.log("getPostComments error:", error);
+            })
+            .finally(() => {
+                e.target.disabled = false;
+                e.target.textContent = "Show Comments";
+            });
+    }
+});
+
+renderPosts();

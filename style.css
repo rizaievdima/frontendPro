@@ -3,55 +3,22 @@ div {
 }
 .container {
     width: 100%;
-}
-.weather-widget {
-    max-width: 500px;
-    width: 100%;
+    max-width: 800px;
     margin: 0 auto;
-    background-color: #4d5cee;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.weather-widget__info {
-    display: flex;
-    flex-wrap: wrap;
-}
-.weather-widget__main-info {
-    width: 70%;
-    padding-bottom: 15px;
-}
-.weather-widget__details {
-    width: 30%;
-    text-align: center;
 }
 p {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 18px;
-    color: #fff;
+    color: #222;
     margin: 0px 0px 5px 0px;
 }
-.weather-widget__city {
-    font-weight: 700;
-    font-size: 36px;
+h2 {
+    font-family: "Roboto", sans-serif;
+    font-size: 32px;
+    color: #222;
 }
-.weather-widget__date,
-.weather-widget__time {
-    margin: 10px 0;
-    font-size: 18px;
-}
-.weather-widget__time {
-    margin-bottom: 20px;
-}
-.weather-widget__temperature {
-    font-size: 36px;
-    font-weight: 700;
-}
-.weather-widget__description {
-    font-weight: 700;
-}
-.refresh-btn {
+.add-post-btn {
     background-color: #2c38ba;
     color: #fff;
     border: 0px;
@@ -60,6 +27,69 @@ p {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.refresh-btn:hover {
+.add-post-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.add-post-btn:hover {
     background-color: #2732a8;
+}
+#add-post-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+input,
+textarea {
+    font-family: "Roboto", sans-serif;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: none;
+}
+textarea {
+    height: 100px;
+}
+.post {
+    padding: 25px 0px;
+    border-bottom: 1px solid #dcdcdc;
+}
+.post__title {
+    font-size: 22px;
+    font-weight: 700;
+}
+.comments-block {
+    margin-top: 10px;
+}
+.show-comment-btn {
+    background-color: #2c38ba;
+    color: #fff;
+    border: 0px;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.show-comment-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.show-comment-btn:hover {
+    background-color: #2732a8;
+}
+.comment {
+    padding: 18px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+.comment__author {
+    font-weight: 700;
+}
+.comment__email {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 15px;
 }
