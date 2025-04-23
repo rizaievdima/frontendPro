@@ -52,6 +52,11 @@ textarea {
 textarea {
     height: 100px;
 }
+.form-message {
+    margin: 10px 0;
+
+    font-weight: 500;
+}
 .post {
     padding: 25px 0px;
     border-bottom: 1px solid #dcdcdc;

@@ -1,5 +1,6 @@
 const postsSection = document.querySelector(".posts-section");
 const newPostsForm = document.querySelector("#add-post-form");
+const newPostMessage = document.querySelector(".form-message");
 const newPostTitleInput = document.getElementById("post-title");
 const newPostContentInput = document.getElementById("post-content");
 
@@ -86,15 +87,18 @@ newPostsForm.addEventListener("submit", async (e) => {
 
     const title = newPostTitleInput.value.trim();
     const content = newPostContentInput.value.trim();
+    newPostMessage.textContent = "";
     if (title && content) {
         document.querySelector(".add-post-btn").disabled = true;
         addPost(title, content)
             .then((newPost) => {
                 postsSection.appendChild(createPostElement(newPost));
+                newPostMessage.textContent = "Post added successfully";
                 newPostTitleInput.value = "";
                 newPostContentInput.value = "";
             })
             .catch((error) => {
+                newPostMessage.textContent = "Failed to add post";
                 console.log("addPost error:", error);
             })
             .finally(() => {
