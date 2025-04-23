@@ -114,7 +114,6 @@ postsSection.addEventListener("click", async (e) => {
         e.target.textContent = "Loading...";
         getPostComments(postId)
             .then((comments) => {
-                console.log(comments);
                 const commentsBlock = e.target.closest(".post").querySelector(".comments");
                 commentsBlock.innerHTML = "";
                 if (comments.length > 0) {
