@@ -1,5 +1,6 @@
-import { getPosts, addPost, getPostComments } from "./api.js";
-import { createPostElement, createCommentElement } from "./ui.js";
+import { getPosts, addPost, getPostComments } from "./js/api.js";
+import { createPostElement, createCommentElement } from "./js/ui.js";
+import "./styles/style.css";
 
 const postsSection = document.querySelector(".posts-section");
 const newPostsForm = document.querySelector("#add-post-form");
